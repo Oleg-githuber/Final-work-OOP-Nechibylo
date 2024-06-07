@@ -3,17 +3,16 @@ package input;
 import logger.CalcLogger;
 
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 public class InputComplexNumber extends InputNumber{
     double imageNumber;
 
-    public InputComplexNumber(Scanner scanner) {
+    public InputComplexNumber(Scanner scanner, CalcLogger logger) {
         inputRealNumber(scanner);
-        Logger logger = Logger.getLogger(InputComplexNumber.class.getName());
-        logger.info(String.format("Введена действительная часть числа: %f", super.getRealNumber()));
+        //Logger logger = Logger.getLogger(InputComplexNumber.class.getName());
+        logger.printLog(String.format("Введена действительная часть числа: %.2f", super.getRealNumber()));
         inputImageNumber(scanner);
-        logger.info(String.format("Введена мнимая часть числа: %fj", imageNumber));
+        logger.printLog(String.format("Введена мнимая часть числа: %.2fj", imageNumber));
     }
 
     public void inputRealNumber(Scanner scanner) {

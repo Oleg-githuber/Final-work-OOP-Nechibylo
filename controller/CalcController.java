@@ -10,11 +10,11 @@ import factory.CalculableFactory;
 import view.ComplexCalcView;
 
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 public class CalcController implements Controller{
     private CalculableFactory calculableFactory;
-    private Logger logger = Logger.getLogger(CalcController.class.getName());
+    //private Logger logger = Logger.getLogger(CalcController.class.getName());
+    CalcLogger logger = new CalcLogger();
 
     public void setCalculableFactory() {
         this.calculableFactory = new CalculableFactory();
@@ -28,32 +28,32 @@ public class CalcController implements Controller{
             op = scanner.nextLine();
             switch (op) {
                 case "+":
-                    logger.info("Выбрана операция сложения");
+                    logger.printLog("Выбрана операция сложения");
                     return Operation.sum;
                 case "-":
-                    logger.info("Выбрана операция вычитания");
+                    logger.printLog("Выбрана операция вычитания");
                     return Operation.diff;
                 case "*":
-                    logger.info("Выбрана операция умножения");
+                    logger.printLog("Выбрана операция умножения");
                     return Operation.multiple;
                 case "/":
-                    logger.info("Выбрана операция деления");
+                    logger.printLog("Выбрана операция деления");
                     return Operation.divide;
                 case "=":
-                    logger.info("Выбрана операция результата арифметического действия");
+                    logger.printLog("Выбрана операция результата арифметического действия");
                     return Operation.equal;
                 default:
                     System.out.println("Символ введён некорректно.");
-                    logger.info("Символ введён некорректно.");
+                    logger.printLog("Символ введён некорректно.");
             }
         }
     }
 
     @Override
     public void run(Scanner scanner) {
-        InputComplexNumber in = new InputComplexNumber(scanner);
+        InputComplexNumber in = new InputComplexNumber(scanner, logger);
         ComplexNumber primaryArgument = new ComplexNumber(in.getRealNumber(), in.getImageNumber());
-        //logger.initLogger(String.format("Создано комплексное число: %s", primaryArgument));
+        //logger.printLog(String.format("Создано комплексное число: %s", primaryArgument));
         Calculable calculator = calculableFactory.create(primaryArgument);
         while (true) {
             Operation oper = chooseOperation(scanner);
@@ -61,7 +61,7 @@ public class CalcController implements Controller{
                 new ComplexCalcView().printComplexNumber(primaryArgument);
                 break;
             }
-            InputComplexNumber in2 = new InputComplexNumber(scanner);
+            InputComplexNumber in2 = new InputComplexNumber(scanner, logger);
             //ComplexNumber argument2 = new ComplexNumber(in2.getRealNumber(), in2.getImageNumber());
             switch (oper) {
                 case sum:

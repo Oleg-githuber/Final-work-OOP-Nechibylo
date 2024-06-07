@@ -27,6 +27,8 @@ public class ComplexNumber {
 
     @Override
     public String toString() {
-        return String.format("%.2f + %.2fj", realNumber, imageNumber);
+        String sign = (imageNumber < 0) ? "-" : "+";
+        double secondNumber = Math.abs(imageNumber);
+        return String.format("%.2f%s%.2fj", realNumber, sign, secondNumber);
     }
 }

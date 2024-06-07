@@ -1,5 +1,10 @@
 package model;
 
+import operation.Diff;
+import operation.Divide;
+import operation.Multiple;
+import operation.Sum;
+
 public class ComplexCalculator implements Calculable{
     private ComplexNumber primaryArgument;
 
@@ -9,42 +14,27 @@ public class ComplexCalculator implements Calculable{
 
     @Override
     public Calculable sum(ComplexNumber argument) {
-        this.primaryArgument.setRealNumber(this.primaryArgument.getRealNumber() + argument.getRealNumber());
-        this.primaryArgument.setImageNumber(this.primaryArgument.getImageNumber() + argument.getImageNumber());
+        this.primaryArgument = new Sum().operaion(this.primaryArgument, argument);
         return this;
     }
 
     @Override
     public Calculable diff(ComplexNumber argument) {
-        this.primaryArgument.setRealNumber(this.primaryArgument.getRealNumber() - argument.getRealNumber());
-        this.primaryArgument.setImageNumber(this.primaryArgument.getImageNumber() - argument.getImageNumber());
+        this.primaryArgument = new Diff().operaion(this.primaryArgument, argument);
         return this;
     }
 
     @Override
     public Calculable multiple(ComplexNumber argument) {
-        double primaryReal = this.primaryArgument.getRealNumber();
-        double real = argument.getRealNumber();
-        double primaryImage = this.primaryArgument.getImageNumber();
-        double image = argument.getImageNumber();
-        double newReal = primaryReal * real - primaryImage * image;
-        double newImage = primaryReal * image + primaryImage * real;
-        this.primaryArgument.setRealNumber(newReal);
-        this.primaryArgument.setImageNumber(newImage);
+        this.primaryArgument = new Multiple().operaion(this.primaryArgument, argument);
         return this;
     }
 
     @Override
     public Calculable divide(ComplexNumber argument) {
         double denum = Math.pow(argument.getRealNumber(), 2) - Math.pow(argument.getImageNumber(), 2);
-        argument.setImageNumber(argument.getImageNumber() * (-1));
-        multiple(argument);
-        try {
-            this.primaryArgument.setRealNumber(this.primaryArgument.getRealNumber() / denum);
-            this.primaryArgument.setImageNumber(this.primaryArgument.getImageNumber() / denum);
-        } catch (ArithmeticException e) {
-            System.out.println("На ноль делить нельзя");
-        }
+        ComplexNumber argument2 = new ComplexNumber(argument.getRealNumber(), argument.getImageNumber() * -1);
+        this.primaryArgument = new Divide().operaion(new Multiple().operaion(this.primaryArgument, argument2), argument);
         return this;
     }
 
